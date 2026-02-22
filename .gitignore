@@ -1,0 +1,53 @@
+# ========================
+# NODE
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# ========================
+# ENV (SEGREDOS)
+# ========================
+.env
+.env.local
+.env.development
+.env.production
+
+# ========================
+# BUILD
+# ========================
+dist/
+build/
+
+# ========================
+# VITE
+# ========================
+.vite/
+vite.config.ts.timestamp-*
+
+# ========================
+# LOGS
+# ========================
+logs
+*.log
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# IDE
+# ========================
+.vscode/
+.idea/
+
+# ========================
+# DATABASE
+# ========================
+*.sqlite
+*.sqlite3
