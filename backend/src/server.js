@@ -11,7 +11,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'CLIENT_URL',
+  origin: [
+    'https://focus-radar-ebon.vercel.app',
+    'https://focus-radar-4baf5z0w1-frois2s-projects.vercel.app'
+  ],
   credentials: true,
 }));
 
