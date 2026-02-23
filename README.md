@@ -7,56 +7,6 @@ Sistema inteligente de produtividade com análise macro (dia) e micro (sessões 
 **Backend** → Node.js · Express · PostgreSQL · JWT  
 **Frontend** → React 18 · Vite · Tailwind CSS · Recharts · Zustand
 
----
-
-## Estrutura
-
-```
-focusradar/
-├── backend/
-│   ├── src/
-│   │   ├── database/
-│   │   │   ├── pool.js          # Conexão PostgreSQL
-│   │   │   └── migrate.js       # Migrations (cria tabelas)
-│   │   ├── middleware/
-│   │   │   └── authenticate.js  # JWT middleware
-│   │   ├── routes/
-│   │   │   ├── auth.js          # Register, login, me
-│   │   │   ├── registros.js     # CRUD registros diários
-│   │   │   └── sessoes.js       # CRUD sessões de foco
-│   │   └── server.js
-│   ├── .env.example
-│   └── package.json
-│
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   │   ├── ui.jsx           # Design system (Card, Input, Modal, etc.)
-    │   │   ├── Sidebar.jsx
-    │   │   └── ProtectedRoute.jsx
-    │   ├── layouts/
-    │   │   └── AppLayout.jsx
-    │   ├── lib/
-    │   │   ├── api.js           # Axios client com interceptors JWT
-    │   │   ├── analytics.js     # Funções de cálculo (produtividade, score)
-    │   │   └── chartTheme.js    # Tema Recharts
-    │   ├── pages/
-    │   │   ├── Auth.jsx         # Login + Cadastro
-    │   │   ├── Dashboard.jsx    # Visão macro + insights
-    │   │   ├── RegistroDiario.jsx
-    │   │   ├── SessoesFoco.jsx
-    │   │   ├── Analytics.jsx    # Heatmap, tendências, correlações
-    │   │   └── Perfil.jsx
-    │   ├── store/
-    │   │   └── auth.js          # Zustand store
-    │   ├── App.jsx
-    │   └── main.jsx
-    ├── tailwind.config.js
-    ├── vite.config.js
-    └── package.json
-```
-
----
 
 ## Setup Backend
 
@@ -100,9 +50,7 @@ npm install
 npm run dev
 ```
 
-App rodando em `http://localhost:5173`
-
-> O Vite está configurado com proxy: chamadas para `/api` são redirecionadas para `localhost:3001`.
+App rodando em `http://localhost:5174`
 
 ---
 
