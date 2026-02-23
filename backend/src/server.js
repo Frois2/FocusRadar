@@ -1,14 +1,14 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
+app.set('trust proxy', 1);
 
 const authRoutes = require('./routes/auth');
 const registrosRoutes = require('./routes/registros');
 const sessoesRoutes = require('./routes/sessoes');
 
-const app = express();
-const PORT = process.env.PORT || 3001;
-const cors = require("cors");
+const app = express(); // 👈 TEM QUE VIR ANTES DE QUALQUER app.use
 
 app.use(cors({
   origin: "*",
@@ -29,6 +29,8 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Erro interno no servidor' });
 });
 
+const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
-  console.log(`FocusRadar API running on http://localhost:${PORT}`);
+  console.log(`FocusRadar API running on port ${PORT}`);
 });
