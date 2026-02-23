@@ -11,7 +11,9 @@ const app = express();
 app.set('trust proxy', 1);
 
 app.use(cors({
-  origin: "*",
+  origin: "https://focus-radar-ebon.vercel.app/",
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  credentials: true
 }));
 
 app.use(express.json());
