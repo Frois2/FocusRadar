@@ -183,12 +183,20 @@ router.post('/resend-verification', authLimiter, authenticate, async (req, res) 
   try {
     const result = await pool.query('SELECT id,email,email_verified FROM users WHERE id=$1', [req.userId]);
     const user = result.rows[0];
+    
     if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
     if (user.email_verified) return res.status(400).json({ error: 'E-mail já verificado' });
+    
     const { token, code } = await createEmailVerificationToken(user.id);
+    
     await sendVerificationEmail(user.email, { token, code });
+    
     res.json({ message: 'Código reenviado' });
-  } catch (err) { res.status(500).json({ error: 'Erro ao reenviar' }); }
+  } catch (err) {
+    console.error('ERRO DETALHADO NO REENVIO:', err); 
+    
+    res.status(500).json({ error: 'Erro ao reenviar' });
+  }
 });
 
 // POST /api/auth/forgot-password
