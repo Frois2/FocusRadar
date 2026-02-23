@@ -2,13 +2,13 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-app.set('trust proxy', 1);
 
 const authRoutes = require('./routes/auth');
 const registrosRoutes = require('./routes/registros');
 const sessoesRoutes = require('./routes/sessoes');
 
-const app = express(); // 👈 TEM QUE VIR ANTES DE QUALQUER app.use
+const app = express();
+app.set('trust proxy', 1);
 
 app.use(cors({
   origin: "*",
