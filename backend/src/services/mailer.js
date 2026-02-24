@@ -1,24 +1,28 @@
 const nodemailer = require('nodemailer');
 const isDev = process.env.NODE_ENV !== 'production';
+// backend/src/services/mailer.js
 
 function createTransporter() {
   if (!process.env.SMTP_HOST) return null;
+  
+  const port = Number(process.env.SMTP_PORT) || 587; // Porta padrão 587 (STARTTLS)
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT) || 465,
-    secure: false,
+    port: port,
+    // Se a porta for 465, secure deve ser true. Se for 587, deve ser false.
+    secure: port === 465, 
     auth: { 
       user: process.env.SMTP_USER, 
       pass: process.env.SMTP_PASS 
     },
     tls: {
+      // Importante para evitar erros de certificado em alguns provedores
       rejectUnauthorized: false 
     },
-    connectionTimeout: 10000, 
-    greetingTimeout: 10000
+    connectionTimeout: 15000, // Aumentado para 15s para dar mais fôlego ao Render
   });
 }
-
 async function sendMail(opts) {
   const transporter = createTransporter();
   if (!transporter) {
