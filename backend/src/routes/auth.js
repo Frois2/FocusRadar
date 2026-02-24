@@ -177,24 +177,26 @@ router.post('/verify-email', async (req, res) => {
     res.status(500).json({ error: 'Erro interno' });
   }
 });
-
 // POST /api/auth/resend-verification
-router.post('/resend-verification', authLimiter, authenticate, async (req, res) => {
+router.post('/resend-verification', authLimiter, async (req, res) => {
+  const { userId } = req.body;
+  if (!userId) return res.status(400).json({ error: 'userId é obrigatório' });
+
   try {
-    const result = await pool.query('SELECT id,email,email_verified FROM users WHERE id=$1', [req.userId]);
+    const result = await pool.query(
+      'SELECT id, email, email_verified FROM users WHERE id=$1', [userId]
+    );
     const user = result.rows[0];
-    
+
     if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
     if (user.email_verified) return res.status(400).json({ error: 'E-mail já verificado' });
-    
+
     const { token, code } = await createEmailVerificationToken(user.id);
-    
     await sendVerificationEmail(user.email, { token, code });
-    
+
     res.json({ message: 'Código reenviado' });
   } catch (err) {
-    console.error('ERRO DETALHADO NO REENVIO:', err); 
-    
+    console.error('ERRO NO REENVIO:', err);
     res.status(500).json({ error: 'Erro ao reenviar' });
   }
 });

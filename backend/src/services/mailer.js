@@ -1,25 +1,22 @@
 const nodemailer = require('nodemailer');
 const isDev = process.env.NODE_ENV !== 'production';
-
 function createTransporter() {
   if (!process.env.SMTP_HOST) return null;
-  
+
   const port = Number(process.env.SMTP_PORT) || 587;
 
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: port,
-    secure: false, 
-    auth: { 
-      user: process.env.SMTP_USER, 
-      pass: process.env.SMTP_PASS 
-    },
-    tls: {
-      rejectUnauthorized: false 
+    secure: port === 465,  // ← true para 465, false para 587
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
     connectionTimeout: 15000,
   });
 }
+
 async function sendMail(opts) {
   const transporter = createTransporter();
   if (!transporter) {
