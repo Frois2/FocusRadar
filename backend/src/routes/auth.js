@@ -179,15 +179,26 @@ router.post('/verify-email', async (req, res) => {
 });
 // POST /api/auth/resend-verification
 router.post('/resend-verification', authLimiter, async (req, res) => {
-  const { userId } = req.body;
-  if (!userId) return res.status(400).json({ error: 'userId é obrigatório' });
+  // Aceita userId do body OU do token JWT (compatível com ambos)
+  let uid = req.body.userId;
+
+  // fallback: tenta pegar do token se vier no header
+  if (!uid) {
+    try {
+      const authHeader = req.headers.authorization || '';
+      const token = authHeader.replace('Bearer ', '');
+      const { sub } = require('../services/tokens').verifyAccessToken(token);
+      uid = sub;
+    } catch (_) {}
+  }
+
+  if (!uid) return res.status(400).json({ error: 'userId é obrigatório' });
 
   try {
     const result = await pool.query(
-      'SELECT id, email, email_verified FROM users WHERE id=$1', [userId]
+      'SELECT id, email, email_verified FROM users WHERE id=$1', [uid]
     );
     const user = result.rows[0];
-
     if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
     if (user.email_verified) return res.status(400).json({ error: 'E-mail já verificado' });
 

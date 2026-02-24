@@ -57,10 +57,13 @@ export default function VerifyEmail() {
   async function resend() {
     setResending(true); setError('');
     try {
-      await api.post('/auth/resend-verification');
+      await api.post('/auth/resend-verification', { userId: user?.id }); // ← adiciona userId
       setCountdown(60);
-    } catch { setError('Não foi possível reenviar. Tente mais tarde.'); }
-    finally { setResending(false); }
+    } catch {
+      setError('Não foi possível reenviar. Tente mais tarde.');
+    } finally {
+      setResending(false);
+    }
   }
 
   if (done) {
